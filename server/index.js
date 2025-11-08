@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 
 //import userRouter
 import users from './routes/userRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 //step2 : create app using express
 const app = express();
@@ -25,6 +26,7 @@ connectDB();
 
 //Route proxy middleware
 app.use('/api/users' , users);
+app.use('/api/auth', authRoutes);
 
 //step 4 : start the server at PORT
 app.listen(PORT , () => {
