@@ -4,6 +4,8 @@ import express from 'express';
 //step 5 : import db from config
 import connectDB from './config/db.js';
 
+import cors from 'cors';
+
 
 //import userRouter
 import users from './routes/userRoutes.js'
@@ -15,6 +17,13 @@ const app = express();
 //step3 : set port
 const PORT = process.env.PORT || 5000;
 
+// Allow frontend (Vite) requests
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Vite default port
+    credentials: true,
+  })
+);
 
 // Body parser middleware
 app.use(express.json());

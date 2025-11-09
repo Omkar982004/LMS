@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
 }, { timestamps: true });
 
+
 /////////////////////////
 // Course Schema
 /////////////////////////
@@ -20,6 +21,22 @@ const courseSchema = new mongoose.Schema({
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   modules: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Module' }]
 }, { timestamps: true });
+
+/////////////////////////
+// Enrollment Request Schema
+/////////////////////////
+const enrollmentRequestSchema = new mongoose.Schema({
+  student: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
+  status: { 
+    type: String, 
+    enum: ['pending', 'approved', 'rejected'], 
+    default: 'pending' 
+  },
+  requestedAt: { type: Date, default: Date.now },
+  reviewedAt: { type: Date }
+});
+
 
 /////////////////////////
 // Module Schema
@@ -76,6 +93,7 @@ const finalGradeSchema = new mongoose.Schema({
 /////////////////////////
 const User = mongoose.model('User', userSchema);
 const Course = mongoose.model('Course', courseSchema);
+const EnrollmentRequest = mongoose.model('EnrollmentRequest', enrollmentRequestSchema);
 const Module = mongoose.model('Module', moduleSchema);
 const Assignment = mongoose.model('Assignment', assignmentSchema);
 const Progress = mongoose.model('Progress', progressSchema);

@@ -1,0 +1,75 @@
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+
+export default function Navbar() {
+  const { user, logout } = useAuth();
+  const location = useLocation();
+
+  const pageTitles = {
+    "/": "Homepage",
+    "/signup": "Signup",
+    "/login": "Login",
+    "/courses": "Courses",
+    "/assignments": "Assignments",
+    "/teach/courses": "My Classes",
+    "/teach/gradebook": "Gradebook",
+    "/admin/dashboard": "Admin Dashboard",
+    "/admin/users": "Manage Users",
+  };
+
+  const pageTitle = pageTitles[location.pathname] || "Page";
+
+  const roleLinks = {
+    student: [
+      { to: "/courses", label: "My Courses" },
+      { to: "/assignments", label: "Assignments" },
+    ],
+    teacher: [
+      { to: "/teach/courses", label: "My Classes" },
+      { to: "/teach/gradebook", label: "Gradebook" },
+    ],
+    admin: [
+      { to: "/admin/dashboard", label: "Admin Dashboard" },
+      { to: "/admin/users", label: "Manage Users" },
+    ],
+  };
+
+  const links = roleLinks[user?.role] || [];
+
+  return (
+    <header>
+      <h1>{pageTitle}</h1>
+
+      <nav>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+
+          {!user && (
+            <>
+              <li><Link to="/signup">Signup</Link></li>
+              <li><Link to="/login">Login</Link></li>
+            </>
+          )}
+
+          {user && links.map((l) => (
+            <li key={l.to}>
+              <Link to={l.to}>{l.label}</Link>
+            </li>
+          ))}
+
+          {user && (
+            <li>
+              <button onClick={logout}>Logout</button>
+            </li>
+          )}
+        </ul>
+      </nav>
+
+      {user ? (
+        <p>Logged in as: {user.name} ({user.role})</p>
+      ) : (
+        <p>Not logged in</p>
+      )}
+    </header>
+  );
+}
