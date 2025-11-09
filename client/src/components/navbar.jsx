@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const roleLinks = {
     student: [
-      { to: "/courses", label: "My Courses" },
+      { to: "/my-courses", label: "My Courses" },
       { to: "/assignments", label: "Assignments" },
     ],
     teacher: [
@@ -42,31 +42,42 @@ export default function Navbar() {
 
       <nav>
         <ul>
-          <li><Link to="/">Home</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
 
           {!user && (
             <>
-              <li><Link to="/signup">Signup</Link></li>
-              <li><Link to="/login">Login</Link></li>
+              <li>
+                <Link to="/signup">Signup</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
             </>
           )}
 
-          {user && links.map((l) => (
-            <li key={l.to}>
-              <Link to={l.to}>{l.label}</Link>
-            </li>
-          ))}
-
+          {/* Only when logged in */}
           {user && (
-            <li>
-              <button onClick={logout}>Logout</button>
-            </li>
+            <>
+              <li><Link to="/courses">Courses</Link></li>
+              {links.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to}>{l.label}</Link>
+                </li>
+              ))}
+              <li>
+                <button onClick={logout}>Logout</button>
+              </li>
+            </>
           )}
         </ul>
       </nav>
 
       {user ? (
-        <p>Logged in as: {user.name} ({user.role})</p>
+        <p>
+          Logged in as: {user.name} ({user.role})
+        </p>
       ) : (
         <p>Not logged in</p>
       )}
