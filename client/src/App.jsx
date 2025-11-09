@@ -3,6 +3,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Homepage from "./pages/Homepage";
 import Courses from "./pages/Courses";
+import CreatedCourses from "./pages/CreatedCourses";
+import AddCourse from "./pages/AddCourse";
 import { useAuth } from "./context/authContext";
 import Navbar from "./components/navbar";
 
@@ -44,12 +46,22 @@ function App() {
           }
         />
 
-        {/* Teacher/Admin specific route to create courses */}
+        {/* View courses created by logged-in teacher/admin */}
+        <Route
+          path="/created-courses"
+          element={
+            <ProtectedRoute roles={["teacher", "admin"]}>
+              <CreatedCourses />
+            </ProtectedRoute>
+          }
+        />
+
+        Create a new course (teacher/admin only)
         <Route
           path="/add-course"
           element={
             <ProtectedRoute roles={["teacher", "admin"]}>
-              <Courses />
+              <AddCourse />
             </ProtectedRoute>
           }
         />

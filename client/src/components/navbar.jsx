@@ -11,7 +11,7 @@ export default function Navbar() {
     "/login": "Login",
     "/courses": "Courses",
     "/assignments": "Assignments",
-    "/teach/courses": "My Classes",
+    "/created-courses": "My Classes",
     "/teach/gradebook": "Gradebook",
     "/admin/dashboard": "Admin Dashboard",
     "/admin/users": "Manage Users",
@@ -25,7 +25,8 @@ export default function Navbar() {
       { to: "/assignments", label: "Assignments" },
     ],
     teacher: [
-      { to: "/teach/courses", label: "My Classes" },
+      { to: "/created-courses", label: "My Classes" },
+      { to: "/add-course", label: "Add Course" },
       { to: "/teach/gradebook", label: "Gradebook" },
     ],
     admin: [

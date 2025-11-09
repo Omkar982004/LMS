@@ -34,3 +34,27 @@ export const getCourses = async (req, res) => {
   }
 };
 
+/////////////////////////
+// Get courses created by logged-in teacher/admin
+/////////////////////////
+export const getCreatedCourses = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userRole = req.user.role;
+
+    // Only teacher or admin can see their created courses
+    if (userRole !== "teacher" && userRole !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const courses = await Course.find({ teacher: userId }).populate(
+      "teacher",
+      "name email"
+    );
+
+    res.status(200).json(courses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching created courses" });
+  }
+};

@@ -21,6 +21,20 @@ export const CourseProvider = ({ children }) => {
     }
   };
 
+  // Fetch courses created by logged-in teacher/admin
+  const fetchCreatedCourses = async () => {
+    dispatch({ type: "FETCH_COURSES_START" });
+    try {
+      const res = await API.get("/courses/created");
+      dispatch({ type: "FETCH_COURSES_SUCCESS", payload: res.data });
+    } catch (err) {
+      dispatch({
+        type: "FETCH_COURSES_ERROR",
+        payload: err.response?.data?.message || "Error fetching created courses",
+      });
+    }
+  };
+
   // Create a new course
   const createCourse = async (title, description) => {
     try {
@@ -36,6 +50,7 @@ export const CourseProvider = ({ children }) => {
       value={{
         ...state,
         fetchCourses,
+        fetchCreatedCourses, // <-- added
         createCourse,
       }}
     >
