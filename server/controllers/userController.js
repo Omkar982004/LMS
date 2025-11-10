@@ -40,13 +40,16 @@ import bcrypt from 'bcryptjs'; // for password hashing
 /////////////////////////
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find().select('-password'); // exclude passwords
+    const { role } = req.query; // optional query param ?role=student
+    const filter = role ? { role } : {}; // if role provided, filter users
+    const users = await User.find(filter).select("-password");
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 /////////////////////////
 // Get single user by ID

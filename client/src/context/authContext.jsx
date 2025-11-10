@@ -1,26 +1,31 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 import authReducer, { initialState } from "./authReducer";
-import API from "../api"; // your axios instance
+import API from "../api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Load user/token from localStorage on mount
+  ///////////////////////////
+  // Restore session on mount
+  ///////////////////////////
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
 
     if (storedToken && storedUser) {
       dispatch({
-        type: "AUTH_SUCCESS",
+        type: "RESTORE_SESSION",
         payload: {
           token: storedToken,
           user: JSON.parse(storedUser),
           message: "Session restored",
         },
       });
+    } else {
+      // Mark auth loading complete if no session found
+      dispatch({ type: "AUTH_LOADING_DONE" });
     }
   }, []);
 
@@ -90,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   ///////////////////////////
-  // Context value
+  // Provide context
   ///////////////////////////
   return (
     <AuthContext.Provider

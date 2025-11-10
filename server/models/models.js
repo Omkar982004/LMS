@@ -105,5 +105,6 @@ export {
   Module,
   Assignment,
   Progress,
-  FinalGrade
+  FinalGrade,
+  EnrollmentRequest
 };

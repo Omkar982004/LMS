@@ -14,14 +14,22 @@ export default function Navbar() {
     "/created-courses": "My Classes",
     "/teach/gradebook": "Gradebook",
     "/admin/dashboard": "Admin Dashboard",
-    "/admin/users": "Manage Users",
+    "/students": "Manage Students",
+    "/my-enrollments": "Enrolled Courses",
   };
 
-  const pageTitle = pageTitles[location.pathname] || "Page";
+  const getPageTitle = (path) => {
+  if (path.startsWith("/students/") && path.endsWith("/manage-enrollments")) {
+    return "Manage Enrollments";
+  }
+  return pageTitles[path] || "Page";
+};
+  const pageTitle = getPageTitle(location.pathname);
+
 
   const roleLinks = {
     student: [
-      { to: "/my-courses", label: "My Courses" },
+      { to: "/my-enrollments", label: "My Courses" },
       { to: "/assignments", label: "Assignments" },
     ],
     teacher: [
@@ -31,7 +39,7 @@ export default function Navbar() {
     ],
     admin: [
       { to: "/admin/dashboard", label: "Admin Dashboard" },
-      { to: "/admin/users", label: "Manage Users" },
+      { to: "/students", label: "manage students" },
     ],
   };
 
