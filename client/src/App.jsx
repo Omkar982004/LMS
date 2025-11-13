@@ -10,6 +10,7 @@ import Navbar from "./components/navbar";
 import Students from "./pages/Students";
 import ManageEnrollments from "./pages/ManageEnrollments"; 
 import MyEnrollments from "./pages/EnrolledCourses"; 
+import ManageModules from "./pages/ManageModules";
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
 
   // Helper to protect routes
   const ProtectedRoute = ({ children, roles }) => {
-    if (authLoading) return <p>Loading session...</p>; // ⏳ wait until localStorage is checked
+    if (authLoading) return <p>Loading session...</p>; // wait until localStorage is checked
 
     if (!isAuthenticated) return <Navigate to="/login" replace />;
     if (roles && !roles.includes(user?.role)) return <Navigate to="/" replace />;
@@ -102,7 +103,17 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
+        {/* Teachers, admins: Manage Modules Page */}
+        <Route
+          path="/created-courses/:courseId/manage-modules"
+          element={
+            <ProtectedRoute roles={["teacher","admin"]}>
+              <ManageModules />
+            </ProtectedRoute>
+          }
+        />
+      
 
         {/* Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />

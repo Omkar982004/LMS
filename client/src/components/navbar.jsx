@@ -19,13 +19,15 @@ export default function Navbar() {
   };
 
   const getPageTitle = (path) => {
-  if (path.startsWith("/students/") && path.endsWith("/manage-enrollments")) {
-    return "Manage Enrollments";
-  }
-  return pageTitles[path] || "Page";
-};
+    if (path.startsWith("/students/") && path.endsWith("/manage-enrollments")) {
+      return "Manage Enrollments";
+    }
+    if (path.startsWith("/created-courses/") && path.endsWith("/manage-modules")) {
+      return "Manage Modules";
+    }
+    return pageTitles[path] || "Page";
+  };
   const pageTitle = getPageTitle(location.pathname);
-
 
   const roleLinks = {
     student: [
@@ -69,7 +71,9 @@ export default function Navbar() {
           {/* Only when logged in */}
           {user && (
             <>
-              <li><Link to="/courses">Courses</Link></li>
+              <li>
+                <Link to="/courses">Courses</Link>
+              </li>
               {links.map((l) => (
                 <li key={l.to}>
                   <Link to={l.to}>{l.label}</Link>
